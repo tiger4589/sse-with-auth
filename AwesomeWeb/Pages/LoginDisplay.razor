@@ -1,0 +1,26 @@
+﻿@* Components/LoginDisplay.razor *@
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager Navigation
+
+<AuthorizeView>
+    <Authorized>
+        <span>Hello, @(context.User.Identity?.Name ?? context.User.FindFirst("preferred_username")?.Value ?? "User")!</span>
+        <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
+    </Authorized>
+    <NotAuthorized>
+        <button class="nav-link btn btn-link" @onclick="BeginLogIn">Log in</button>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private void BeginLogIn()
+    {
+        Navigation.NavigateToLogin("authentication/login");
+    }
+
+    private void BeginLogOut()
+    {
+        Navigation.NavigateToLogout("authentication/logout");
+    }
+}

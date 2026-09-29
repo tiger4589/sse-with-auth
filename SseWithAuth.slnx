@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="AspireApp/AspireApp.AppHost/AspireApp.AppHost.csproj" Id="735eac54-5359-4773-ba72-ade0d84ca0a0" />
+  <Project Path="AspireApp/AspireApp.ServiceDefaults/AspireApp.ServiceDefaults.csproj" />
+  <Project Path="AwesomeApi/AwesomeApi.csproj" />
+  <Project Path="AwesomeWeb/AwesomeWeb.csproj" />
+</Solution>
