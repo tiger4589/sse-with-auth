@@ -1,9 +1,9 @@
 const connections = {};
 
-export function connect(id, url, dotNetObject, messageCallback, errorCallback) {
+export function connect(id, url, dotNetObject, messageCallback, errorCallback, slt) {
     disconnect(id);
 
-    const source = new EventSource(url);
+    const source = new EventSource(url + '?shortLivedToken=' + slt);
 
     source.onmessage = (event) => {
         dotNetObject.invokeMethodAsync(messageCallback, id, event.data);

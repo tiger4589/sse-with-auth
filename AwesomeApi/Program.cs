@@ -1,11 +1,13 @@
+using AwesomeApi;
 using Scalar.AspNetCore;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddSingleton<ShortLivedTokenStore>();
+
 builder.Services.AddOpenApi();
 
 builder.Services.AddCors(options =>
@@ -69,12 +71,47 @@ app.MapGet("/events", (CancellationToken cancellationToken) =>
             while (!cancellationToken.IsCancellationRequested)
             {
                 yield return count++;
-                await Task.Delay(2000, cancellationToken);
+                await Task.Delay(1000, cancellationToken);
             }
         }
-
+        
         return Results.ServerSentEvents(StreamEvents(cancellationToken));
     }).WithName("GetEvents")
     .RequireAuthorization();
+
+app.MapGet("/request-slt", (HttpContext context, ShortLivedTokenStore store) =>
+    {
+        string? userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return Results.BadRequest("Empty Username");
+        }
+
+        return Results.Ok(store.GetToken(userId));
+    })
+    .WithName("RequestShortLivedToken")
+    .RequireAuthorization();
+
+app.MapGet("/events-slt", (string shortLivedToken, ShortLivedTokenStore store, CancellationToken cancellationToken) =>
+{
+    if (!store.IsTokenValid(shortLivedToken))
+    {
+        return Results.Unauthorized();
+    }
+
+    int count = 0;
+
+    async IAsyncEnumerable<int> StreamEvents(CancellationToken cancellationToken)
+    {
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            yield return count++;
+            await Task.Delay(1000, cancellationToken);
+        }
+    }
+
+    return Results.ServerSentEvents(StreamEvents(cancellationToken));
+}).WithName("GetEventsWithShortLivedToken");
 
 app.Run();
