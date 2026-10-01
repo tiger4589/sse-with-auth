@@ -1,10 +1,12 @@
-﻿import { fetchEventSource } from '@microsoft/fetch-event-source';
+﻿import { fetchEventSource } from 'https://cdn.jsdelivr.net/npm/@microsoft/fetch-event-source@2.0.1/+esm';
+
+const connections = {};
+
 export async function connect(id, url, dotNetObject, messageCallback, errorCallback, token) {
-    disconnect(id);
 
     await fetchEventSource(url, {
         headers: {
-            'Authorization': token,
+            'Authorization': `Bearer ${token}`,
         },
         onmessage(event) {
             dotNetObject.invokeMethodAsync(messageCallback, id, event.data);
