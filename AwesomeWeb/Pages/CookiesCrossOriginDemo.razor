@@ -1,0 +1,28 @@
+@page "/demo/cookies-cross-origin"
+
+<PageTitle>Cross-Origin Cookie SSE Demo</PageTitle>
+
+<div class="page-shell">
+    <h1>Cookies - Cross-Origin</h1>
+    <p>
+        This demo initializes an auth cookie on the API and connects via credentialed cross-origin EventSource
+        (<code>withCredentials: true</code>).
+    </p>
+
+    <div class="endpoint-panel">
+        <div class="counter-box">
+            <span class="counter-label">Latest value</span>
+            <strong>@_lastValue</strong>
+        </div>
+
+        <div class="button-row">
+            <button @onclick="StartAsync" disabled="@_isConnected">Start</button>
+            <button @onclick="StopAsync" disabled="@(!_isConnected)">Stop</button>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(_error))
+        {
+            <p class="error-message">@_error</p>
+        }
+    </div>
+</div>

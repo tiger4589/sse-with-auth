@@ -30,5 +30,4 @@ public class ShortLivedTokenStore
 
         return false;
     }
-
 }

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Same-Origin Cookie SSE Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem auto;
+            max-width: 900px;
+            padding: 0 1rem;
+        }
+
+        .panel {
+            background: #f8fafc;
+            border: 1px solid #dbe4ee;
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+
+        .counter {
+            font-size: 2rem;
+            margin: 0.6rem 0 1rem;
+        }
+
+        button {
+            margin-right: 0.5rem;
+        }
+
+        #error {
+            color: #b91c1c;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cookies - Same-Origin SSE Demo</h1>
+    <p>
+        This page is hosted by the API itself, so page origin and SSE endpoint origin are identical.
+    </p>
+    <div class="panel">
+        <p><strong>Latest value:</strong></p>
+        <div id="value" class="counter">0</div>
+        <button id="start">Start</button>
+        <button id="stop" disabled>Stop</button>
+        <div id="error"></div>
+    </div>
+
+    <script type="module" src="/js/cookieSameOriginDemo.js"></script>
+</body>
+</html>

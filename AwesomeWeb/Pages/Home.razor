@@ -1,185 +1,54 @@
-﻿@page "/"
-@using Microsoft.AspNetCore.Authorization
-@attribute [Authorize]
+@page "/"
+@inject IConfiguration Configuration
 
-<PageTitle>Demo</PageTitle>
+<PageTitle>SSE Authentication Demos</PageTitle>
 
 <div class="page-shell">
-    <h1>SSE demo: With Authentication</h1>
+    <h1>SSE Authentication Demos</h1>
+    <p>
+        This project demonstrates five ways to authenticate Server-Sent Events (SSE) connections.
+        Start by logging in if you want to run the token-based demos, then open each dedicated page: 
+        <p>Username: demo_user</p>
+        <p>Password: test</p>
+    </p>
+
+    <h2>How to test</h2>
+    <ol>
+        <li>Run the Aspire app host so Keycloak, API, and web app are available.</li>
+        <li>Use the login button in the top navigation for token-based demos.</li>
+        <li>Open one demo page at a time and click <strong>Start</strong>.</li>
+        <li>Confirm the counter increments every second.</li>
+    </ol>
 
     <div class="panel-grid">
-        <div class="endpoint-panel">
-            <h2>Using JS</h2>
-
-            <div class="counter-box">
-                <span class="counter-label">Latest value</span>
-                <strong>@_lastValue</strong>
-            </div>
-
-            <div class="button-row">
-                <button class="primary" @onclick='() => StartEndpoint("1")'>
-                    Start
-                </button>
-            </div>
-
-            @if (!string.IsNullOrWhiteSpace(_error))
-            {
-                <p class="error-message">@_error</p>
-            }
-        </div>
-        <div class="endpoint-panel">
-            <h2>Using HttpClient</h2>
-
-            <div class="button-row">
-                <button @onclick="CallApi">Call API</button>
-            </div>
-        </div>
-    </div>
-    
-    <div class="panel-grid">
-        <div class="endpoint-panel">
-            <h2>Using JS - With Library</h2>
-
-            <div class="counter-box">
-                <span class="counter-label">Latest value</span>
-                <strong>@_lastValue</strong>
-            </div>
-
-            <div class="button-row">
-                <button class="primary" @onclick='() => StartAuthenticatedEndpoint("2")'>
-                    Start
-                </button>
-            </div>
-
-            @if (!string.IsNullOrWhiteSpace(_error))
-            {
-                <p class="error-message">@_error</p>
-            }
-        </div>
-        <div class="endpoint-panel">
-           
-        </div>
+        <article class="endpoint-panel">
+            <h3>1) Cookies - Same-Origin</h3>
+            <p>Runs from the API origin so the page and SSE endpoint share the same origin.</p>
+            <p><a href="@SameOriginDemoUrl" target="_blank" rel="noopener noreferrer">Open same-origin cookie demo</a></p>
+        </article>
+        <article class="endpoint-panel">
+            <h3>2) Cookies - Cross-Origin</h3>
+            <p>Uses credentialed cross-origin EventSource from the Blazor app to the API.</p>
+            <p><a href="/demo/cookies-cross-origin">Open cross-origin cookie demo</a></p>
+        </article>
+        <article class="endpoint-panel">
+            <h3>3) Short-Lived Token</h3>
+            <p>Fetches a short-lived token first, then sends it as a query parameter on SSE connect.</p>
+            <p><a href="/demo/short-lived-token">Open short-lived token demo</a></p>
+        </article>
+        <article class="endpoint-panel">
+            <h3>4) microsoft/fetch-event-source</h3>
+            <p>Uses the fetch-event-source library and includes Bearer token authentication in headers.</p>
+            <p><a href="/demo/fetch-event-source">Open fetch-event-source demo</a></p>
+        </article>
+        <article class="endpoint-panel">
+            <h3>5) HTTP Client (DotNetSseClient)</h3>
+            <p>Uses DotNetSseClient with a bearer token provider configured in DI.</p>
+            <p><a href="/demo/http-client">Open HTTP client demo</a></p>
+        </article>
     </div>
 </div>
 
-<style>
-    .page-shell {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 2rem;
-        font-family: sans-serif;
-    }
-
-    h1 {
-        margin-bottom: 1.5rem;
-    }
-
-    .panel-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .endpoint-panel {
-        background: #f8fafc;
-        border: 1px solid #dbe4ee;
-        border-radius: 12px;
-        padding: 1.25rem;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
-    }
-
-    .endpoint-panel h2 {
-        margin-top: 0;
-        margin-bottom: 0.75rem;
-    }
-
-    .endpoint-url {
-        margin: 0 0 1rem;
-        color: #475569;
-        font-size: 0.95rem;
-        word-break: break-all;
-    }
-
-    .status-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-    }
-
-    .status-label {
-        color: #334155;
-        font-weight: 600;
-    }
-
-    .status-value {
-        font-weight: 700;
-    }
-
-    .status-value.connected {
-        color: #15803d;
-    }
-
-    .status-value.stopped {
-        color: #475569;
-    }
-
-    .counter-box {
-        background: #ffffff;
-        border: 1px solid #dfe6ee;
-        border-radius: 10px;
-        padding: 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.35rem;
-        margin-bottom: 1rem;
-    }
-
-    .counter-label {
-        font-size: 0.8rem;
-        color: #64748b;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .counter-box strong {
-        font-size: 2rem;
-        color: #0f172a;
-    }
-
-    .button-row {
-        display: flex;
-        gap: 0.75rem;
-    }
-
-    button {
-        border: none;
-        border-radius: 8px;
-        padding: 0.7rem 1rem;
-        font-size: 0.96rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: opacity 0.2s ease;
-    }
-
-    button:disabled {
-        opacity: 0.55;
-        cursor: not-allowed;
-    }
-
-    .primary {
-        background: #2563eb;
-        color: white;
-    }
-
-    .secondary {
-        background: #e2e8f0;
-        color: #0f172a;
-    }
-
-    .error-message {
-        margin-top: 1rem;
-        color: #b91c1c;
-        font-weight: 600;
-    }
-</style>
+@code {
+    private string SameOriginDemoUrl => $"{Configuration["ApiUrl"]}/cookie-same-origin-demo.html";
+}

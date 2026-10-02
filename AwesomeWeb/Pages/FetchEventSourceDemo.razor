@@ -1,0 +1,29 @@
+@page "/demo/fetch-event-source"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<PageTitle>fetch-event-source SSE Demo</PageTitle>
+
+<div class="page-shell">
+    <h1>fetch-event-source + Bearer Token</h1>
+    <p>
+        This demo uses <code>@("@microsoft/fetch-event-source")</code> so it can send the access token in the Authorization header.
+    </p>
+
+    <div class="endpoint-panel">
+        <div class="counter-box">
+            <span class="counter-label">Latest value</span>
+            <strong>@_lastValue</strong>
+        </div>
+
+        <div class="button-row">
+            <button @onclick="StartAsync" disabled="@_isConnected">Start</button>
+            <button @onclick="StopAsync" disabled="@(!_isConnected)">Stop</button>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(_error))
+        {
+            <p class="error-message">@_error</p>
+        }
+    </div>
+</div>

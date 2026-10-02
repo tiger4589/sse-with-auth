@@ -1,0 +1,23 @@
+@page "/demo/http-client"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<PageTitle>HTTP Client SSE Demo</PageTitle>
+
+<div class="page-shell">
+    <h1>HTTP Client (DotNetSseClient)</h1>
+    <p>
+        This demo uses <code>DotNetSseClient</code> configured with a bearer token provider in dependency injection.
+    </p>
+
+    <div class="endpoint-panel">
+        <div class="counter-box">
+            <span class="counter-label">Latest value</span>
+            <strong>@_lastValue</strong>
+        </div>
+
+        <div class="button-row">
+            <button @onclick="StartAsync" disabled="@_isConnected">Start</button>
+        </div>
+    </div>
+</div>

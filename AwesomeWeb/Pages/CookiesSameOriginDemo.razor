@@ -1,0 +1,19 @@
+@page "/demo/cookies-same-origin"
+@inject IConfiguration Configuration
+
+<PageTitle>Same-Origin Cookie SSE Demo</PageTitle>
+
+<div class="page-shell">
+    <h1>Cookies - Same-Origin</h1>
+    <p>
+        A true same-origin cookie demo is hosted from the API origin, because same-origin requires the page and SSE endpoint to share
+        the exact same origin.
+    </p>
+    <p>
+        <a href="@SameOriginDemoUrl" target="_blank" rel="noopener noreferrer">Open same-origin cookie demo page</a>
+    </p>
+</div>
+
+@code {
+    private string SameOriginDemoUrl => $"{Configuration["ApiUrl"]}/cookie-same-origin-demo.html";
+}

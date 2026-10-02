@@ -1,14 +1,16 @@
-﻿@using Microsoft.AspNetCore.Components.Authorization
+@using AwesomeWeb.Pages
 @inherits LayoutComponentBase
 
-<AuthorizeView>
-    <Authorized>
-        <span>Hello, @context.User.Identity?.Name!</span>
-        <a href="authentication/logout">Log out</a>
-    </Authorized>
-    <NotAuthorized>
-        <a href="authentication/login">Log in with Keycloak</a>
-    </NotAuthorized>
-</AuthorizeView>
+<div class="top-nav">
+    <nav class="demo-links">
+        <a href="/">Overview</a>
+        <a href="/demo/cookies-same-origin">Cookies (Same-Origin)</a>
+        <a href="/demo/cookies-cross-origin">Cookies (Cross-Origin)</a>
+        <a href="/demo/short-lived-token">Short-Lived Token</a>
+        <a href="/demo/fetch-event-source">fetch-event-source</a>
+        <a href="/demo/http-client">HTTP Client</a>
+    </nav>
+    <LoginDisplay />
+</div>
 
 @Body

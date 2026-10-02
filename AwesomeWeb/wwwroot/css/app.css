@@ -87,3 +87,74 @@ code {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+
+.page-shell {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: sans-serif;
+}
+
+.panel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+}
+
+.endpoint-panel {
+    background: #f8fafc;
+    border: 1px solid #dbe4ee;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+.counter-box {
+    background: #ffffff;
+    border: 1px solid #dfe6ee;
+    border-radius: 10px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+}
+
+.counter-label {
+    font-size: 0.8rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.counter-box strong {
+    font-size: 2rem;
+    color: #0f172a;
+}
+
+.button-row {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.error-message {
+    margin-top: 1rem;
+    color: #b91c1c;
+    font-weight: 600;
+}
+
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1rem 2rem 0;
+}
+
+.demo-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}

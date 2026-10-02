@@ -1,0 +1,29 @@
+@page "/demo/short-lived-token"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<PageTitle>Short-Lived Token SSE Demo</PageTitle>
+
+<div class="page-shell">
+    <h1>Short-Lived Token SSE</h1>
+    <p>
+        This demo requests a short-lived token from the API and then passes it as a query string parameter when opening EventSource.
+    </p>
+
+    <div class="endpoint-panel">
+        <div class="counter-box">
+            <span class="counter-label">Latest value</span>
+            <strong>@_lastValue</strong>
+        </div>
+
+        <div class="button-row">
+            <button @onclick="StartAsync" disabled="@_isConnected">Start</button>
+            <button @onclick="StopAsync" disabled="@(!_isConnected)">Stop</button>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(_error))
+        {
+            <p class="error-message">@_error</p>
+        }
+    </div>
+</div>
