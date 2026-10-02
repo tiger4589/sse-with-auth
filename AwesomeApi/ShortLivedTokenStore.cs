@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AwesomeApi;
 
@@ -21,13 +22,5 @@ public class ShortLivedTokenStore
         return token;
     }
 
-    public bool IsTokenValid(string token)
-    {
-        if (_tokenStore.TryRemove(token, out _))
-        {
-            return true;
-        }
-
-        return false;
-    }
+    public bool TryConsume(string token, [NotNullWhen(true)] out string? userId) => _tokenStore.TryRemove(token, out userId);
 }

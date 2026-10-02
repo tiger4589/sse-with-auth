@@ -132,7 +132,7 @@ app.MapGet("/request-slt", (HttpContext context, ShortLivedTokenStore store) =>
 
         if (string.IsNullOrWhiteSpace(userId))
         {
-            return Results.BadRequest("Empty Username");
+            return Results.Unauthorized();
         }
 
         return Results.Ok(store.GetToken(userId));
@@ -142,7 +142,7 @@ app.MapGet("/request-slt", (HttpContext context, ShortLivedTokenStore store) =>
 
 app.MapGet("/events-slt", (string shortLivedToken, ShortLivedTokenStore store, CancellationToken cancellationToken) =>
 {
-    if (!store.IsTokenValid(shortLivedToken))
+    if (!store.TryConsume(shortLivedToken, out _))
     {
         return Results.Unauthorized();
     }
